@@ -1,0 +1,34 @@
+section.content {
+  padding-top: 5rem;
+}
+
+form.registration {
+  width: 25%;
+  margin: auto;
+}
+
+form.login {
+  width: 25%;
+  margin: auto;
+}
+
+form .form-element {
+  padding: .5rem;
+}
+
+form label {
+  width: 33%;
+}
+
+form input {
+  width: 67%;
+  padding: .5rem;
+}
+form .form-actions {
+  text-align: right;
+}
+
+form .form-actions input {
+  width: 25%;
+  margin-right: .5rem;
+}

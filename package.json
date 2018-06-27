@@ -24,6 +24,8 @@
     "webpack-hot-middleware": "^2.20.0"
   },
   "dependencies": {
+    "@okta/okta-auth-js": "^1.17.0",
+    "@okta/okta-react": "^1.0.2",
     "bootstrap": "^3.3.7",
     "jquery": "^3.2.1",
     "react": "^16.0.0",
