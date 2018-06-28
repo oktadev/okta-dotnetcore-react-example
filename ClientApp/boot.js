@@ -32,7 +32,7 @@ render(
         <Route path="/implicit/callback" component={ImplicitCallback} />
         <Route path="/register" component={RegisterPage} />
         <SecureRoute path="/profile" component={ProfilePage} />
-        <SecureRoute path="/submission" component={SubmissionPage} />
+        <SecureRoute path="/submission/:sessionId?" component={SubmissionPage} />
       </Layout>
     </Security>
   </BrowserRouter>,

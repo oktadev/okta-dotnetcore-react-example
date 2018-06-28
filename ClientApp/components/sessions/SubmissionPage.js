@@ -9,12 +9,35 @@ class SubmissionPage extends React.Component {
     this.state = {
       title: '',
       abstract: '',
+      userId: '',
+      sessionId: undefined,
       submitted: false
     };
 
+    this.loadSubmission = this.loadSubmission.bind(this);
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleAbstractChange = this.handleAbstractChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  async loadSubmission(){
+    fetch(`/api/sessions/${this.props.match.params.sessionId}`, {
+      headers: {
+        Authorization: 'Bearer ' + await this.props.auth.getAccessToken()
+      }
+    })
+    .then(rsp => rsp.json())
+    .then(session => {
+      this.setState({ // spread here?
+        title: session.title,
+        abstract: session.abstract,
+        userId: session.userId,
+        sessionId: session.sessionId
+      });
+    })
+    .catch(err => {
+      console.error(err);
+    });
   }
 
   handleTitleChange(e) {
@@ -25,9 +48,17 @@ class SubmissionPage extends React.Component {
     this.setState({ abstract: e.target.value });
   }
 
+  componentDidMount(){
+    if(this.props.match.params.sessionId){
+      this.loadSubmission();
+    }
+  }
+
   async handleSubmit(e){
     e.preventDefault();
-    fetch('/api/sessions', {
+    var sessionId = this.props.match.params.sessionId;
+    var url = sessionId ? `/api/sessions/${sessionId}` : '/api/sessions';
+    fetch(url, {
       body: JSON.stringify(this.state),
       cache: 'no-cache',
       headers: {
@@ -37,7 +68,7 @@ class SubmissionPage extends React.Component {
       method: 'POST'
     })
     .then(rsp => {
-      if(rsp.status === 201){
+      if(rsp.status === 201 || rsp.status === 200){
         this.props.history.push('/profile');
       }
     })
@@ -52,6 +83,8 @@ class SubmissionPage extends React.Component {
     }
     return(
       <form onSubmit={this.handleSubmit}>
+        <input type="hidden" value={this.state.sessionId}/>
+        <input type="hidden" value={this.state.userId}/>
         <div className="form-element">
           <label>Title:</label>
           <input
