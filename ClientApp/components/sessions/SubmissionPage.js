@@ -28,12 +28,7 @@ class SubmissionPage extends React.Component {
     })
     .then(rsp => rsp.json())
     .then(session => {
-      this.setState({ // spread here?
-        title: session.title,
-        abstract: session.abstract,
-        userId: session.userId,
-        sessionId: session.sessionId
-      });
+      this.setState(Object.assign({}, this.state, session));
     })
     .catch(err => {
       console.error(err);
@@ -83,8 +78,6 @@ class SubmissionPage extends React.Component {
     }
     return(
       <form onSubmit={this.handleSubmit}>
-        <input type="hidden" value={this.state.sessionId}/>
-        <input type="hidden" value={this.state.userId}/>
         <div className="form-element">
           <label>Title:</label>
           <input
