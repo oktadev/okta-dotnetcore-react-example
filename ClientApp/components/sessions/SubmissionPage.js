@@ -63,6 +63,8 @@ class SubmissionPage extends React.Component {
           <label>Abstract:</label>
           <textarea
             id="abstract"
+            cols="100"
+            rows="10"
             value={this.state.abstract}
             onChange={this.handleAbstractChange} />
         </div>
