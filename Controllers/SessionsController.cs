@@ -34,6 +34,14 @@ namespace okta_dotnetcore_react_example.Controllers
       return Created($"api/sessions/{session.SessionId}", session);
     }
 
+    [HttpDelete("/api/sessions/{sessionId}")]
+    public IActionResult Delete(int sessionId){
+      var session = context.Sessions.SingleOrDefault(sess => sess.SessionId == sessionId);
+      context.Remove(session);
+      context.SaveChanges();
+      return Ok();
+    }
+
 
   }
 }

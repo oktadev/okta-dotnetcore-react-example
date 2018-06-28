@@ -15,13 +15,30 @@ export default withAuth(class SessionListing extends React.Component {
         Authorization: 'Bearer ' + await this.props.auth.getAccessToken()
       }
     })
-      .then(rsp => rsp.json())
-      .then(sessions => {
-        this.setState({ sessions });
-      })
-      .catch(err => {
-        console.error(err);
-      });
+    .then(rsp => rsp.json())
+    .then(sessions => {
+      this.setState({ sessions });
+    })
+    .catch(err => {
+      console.error(err);
+    });
+  }
+
+  async deleteSession(session){
+    fetch(`/api/sessions/${session.sessionId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: 'Bearer ' + await this.props.auth.getAccessToken()
+      }
+    })
+    .then(rsp => {
+      if(rsp.status === 200){
+        this.getUsersSessions();
+      }
+    })
+    .catch(err => {
+      console.error(err);
+    });
   }
 
   componentDidMount() {
@@ -31,7 +48,12 @@ export default withAuth(class SessionListing extends React.Component {
   render() {
     return (
       <ul className="session-list">
-        {this.state.sessions.map(session => <Session key={session.sessionId} id={session.sessionId} session={session} />)}
+        {this.state.sessions.map(session => 
+          <Session key={session.sessionId} 
+            id={session.sessionId}
+            isOwner={session.userId === this.props.userId}
+            delete={this.deleteSession.bind(this, session)} 
+            session={session} />)}
       </ul>
     )
   }
