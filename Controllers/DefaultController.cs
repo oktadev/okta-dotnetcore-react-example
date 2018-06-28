@@ -5,7 +5,7 @@ namespace okta_dotnetcore_react_example.Controllers
 {
     public class DefaultController : Controller
     {
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             var data = new {
                 name = "Simple React API",

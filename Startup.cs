@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using okta_dotnetcore_react_example.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace okta_dotnetcore_react_example
 {
@@ -22,6 +25,19 @@ namespace okta_dotnetcore_react_example
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+      services.AddAuthentication(sharedOptions =>
+      {
+        sharedOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        sharedOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+      })
+      .AddJwtBearer(options =>
+      {
+        options.Authority = "https://dev-846291.oktapreview.com/oauth2/default";
+        options.Audience = "api://default";
+      });
+
+      services.AddDbContext<ApiContext>(options => options.UseInMemoryDatabase("ConferenceDb"));
+
       services.AddMvc();
     }
 
@@ -42,6 +58,7 @@ namespace okta_dotnetcore_react_example
         app.UseExceptionHandler("/Home/Error");
       }
 
+      app.UseAuthentication();
       app.UseStaticFiles();
 
       app.UseMvc(routes =>
@@ -57,8 +74,11 @@ namespace okta_dotnetcore_react_example
 
         routes.MapSpaFallbackRoute(
           name: "spa-fallback",
-          defaults: new { controller = "Home", action = "Index" 
-        });
+          defaults: new
+          {
+            controller = "Home",
+            action = "Index"
+          });
       });
     }
   }

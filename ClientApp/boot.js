@@ -12,6 +12,7 @@ import NotesPage from './components/notes/NotesPage';
 import RegisterPage from './components/auth/RegisterPage';
 import ProfilePage from './components/auth/ProfilePage';
 import LoginPage from './components/auth/LoginPage';
+import SubmissionPage from './components/sessions/SubmissionPage';
 
 
 const onAuthRequired = ({ history }) => history.push('/login');
@@ -31,6 +32,7 @@ render(
         <Route path="/implicit/callback" component={ImplicitCallback} />
         <Route path="/register" component={RegisterPage} />
         <SecureRoute path="/profile" component={ProfilePage} />
+        <SecureRoute path="/submission" component={SubmissionPage} />
       </Layout>
     </Security>
   </BrowserRouter>,
