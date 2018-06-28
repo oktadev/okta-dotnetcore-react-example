@@ -1,6 +1,7 @@
 import React from 'react';
 import { withAuth } from '@okta/okta-react';
 
+import './SessionListing.css';
 import Session from './Session';
 
 export default withAuth(class SessionListing extends React.Component {
