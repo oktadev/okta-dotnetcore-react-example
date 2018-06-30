@@ -1,9 +1,7 @@
 import React from 'react'; 
 import { Redirect} from 'react-router-dom';
-import OktaAuth from '@okta/okta-auth-js';
 import { withAuth } from '@okta/okta-react';
 
-import config from '../../app.config';
 
 export default withAuth(class RegisterPage extends React.Component{
   constructor(props){
@@ -16,7 +14,6 @@ export default withAuth(class RegisterPage extends React.Component{
       sessionToken: null,
       registered: false
     };
-    this.oktaAuth = new OktaAuth({ url: config.url });
     this.checkAuthentication = this.checkAuthentication.bind(this);
     this.checkAuthentication();
 
@@ -32,10 +29,6 @@ export default withAuth(class RegisterPage extends React.Component{
     if (sessionToken) {
       this.setState({ sessionToken });
     }
-  }
-
-  componentDidUpdate() {
-    this.checkAuthentication();
   }
 
   handleFirstNameChange(e){
@@ -61,13 +54,6 @@ export default withAuth(class RegisterPage extends React.Component{
       },
       body: JSON.stringify(this.state)
     }).then(user => {
-      // this.oktaAuth.signIn({
-      //   username: this.state.email,
-      //   password: this.state.password
-      // })
-      // .then(res => this.setState({
-      //   sessionToken: res.sessionToken
-      // }));
       this.setState({ registered: true });
     })
     .catch(err => console.log);
